@@ -29,7 +29,7 @@ class AppTheme {
       ),
       
       // Configuración de las Tarjetas (Cards)
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 1,
         shadowColor: AppColors.primary.withOpacity(0.04),

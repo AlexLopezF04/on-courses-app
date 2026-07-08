@@ -20,14 +20,14 @@ class AppTextStyles {
 
   static TextStyle h3 = GoogleFonts.outfit(
     fontSize: 18,
-    fontWeight: FontWeight.semibold,
+    fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
     height: 1.3,
   );
 
   static TextStyle subtitle = GoogleFonts.outfit(
     fontSize: 16,
-    fontWeight: FontWeight.medium,
+    fontWeight: FontWeight.w500,
     color: AppColors.textSecondary,
     height: 1.4,
   );

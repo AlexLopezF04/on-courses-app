@@ -42,7 +42,7 @@ class CategoryChip extends StatelessWidget {
           label,
           style: AppTextStyles.label.copyWith(
             color: isSelected ? Colors.white : AppColors.textSecondary,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.medium,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
           ),
         ),
       ),

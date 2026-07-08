@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import '../../../core/utils/formatters.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_text_styles.dart';
-import '../../providers/admin_provider.dart';
-import '../../widgets/order_status_badge.dart';
 
 class AdminOrdersScreen extends StatefulWidget {
   const AdminOrdersScreen({super.key});

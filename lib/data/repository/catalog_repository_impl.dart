@@ -14,7 +14,15 @@ class CatalogRepositoryImpl implements CatalogRepository {
   Future<List<Category>> getCategories() async {
     try {
       final response = await _dio.get('/categories/');
-      final list = response.data as List? ?? [];
+      final rawData = response.data;
+      final List<dynamic> list;
+      if (rawData is Map && rawData.containsKey('results')) {
+        list = rawData['results'] as List? ?? [];
+      } else if (rawData is List) {
+        list = rawData;
+      } else {
+        list = [];
+      }
       return list
           .map((json) => CategoryDto.fromJson(json as Map<String, dynamic>).toDomain())
           .toList();
@@ -36,7 +44,15 @@ class CatalogRepositoryImpl implements CatalogRepository {
         queryParameters: queryParams,
       );
       
-      final list = response.data as List? ?? [];
+      final rawData = response.data;
+      final List<dynamic> list;
+      if (rawData is Map && rawData.containsKey('results')) {
+        list = rawData['results'] as List? ?? [];
+      } else if (rawData is List) {
+        list = rawData;
+      } else {
+        list = [];
+      }
       return list
           .map((json) => ProductDto.fromJson(json as Map<String, dynamic>).toDomain())
           .toList();

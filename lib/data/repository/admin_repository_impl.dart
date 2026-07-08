@@ -147,7 +147,15 @@ class AdminRepositoryImpl implements AdminRepository {
       // Como el usuario logueado es admin, el backend automáticamente
       // nos retornará todas las órdenes en la consulta normal.
       final response = await _dio.get('/orders/');
-      final list = response.data as List? ?? [];
+      final rawData = response.data;
+      final List<dynamic> list;
+      if (rawData is Map && rawData.containsKey('results')) {
+        list = rawData['results'] as List? ?? [];
+      } else if (rawData is List) {
+        list = rawData;
+      } else {
+        list = [];
+      }
       return list
           .map((json) => OrderDto.fromJson(json as Map<String, dynamic>).toDomain())
           .toList();
@@ -161,7 +169,15 @@ class AdminRepositoryImpl implements AdminRepository {
     try {
       // Solo accesible para usuarios staff/admin
       final response = await _dio.get('/users/');
-      final list = response.data as List? ?? [];
+      final rawData = response.data;
+      final List<dynamic> list;
+      if (rawData is Map && rawData.containsKey('results')) {
+        list = rawData['results'] as List? ?? [];
+      } else if (rawData is List) {
+        list = rawData;
+      } else {
+        list = [];
+      }
       return list
           .map((json) => User.fromJson(json as Map<String, dynamic>))
           .toList();

@@ -13,7 +13,15 @@ class OrderRepositoryImpl implements OrderRepository {
   Future<List<Order>> getMyOrders() async {
     try {
       final response = await _dio.get('/orders/');
-      final list = response.data as List? ?? [];
+      final rawData = response.data;
+      final List<dynamic> list;
+      if (rawData is Map && rawData.containsKey('results')) {
+        list = rawData['results'] as List? ?? [];
+      } else if (rawData is List) {
+        list = rawData;
+      } else {
+        list = [];
+      }
       return list
           .map((json) => OrderDto.fromJson(json as Map<String, dynamic>).toDomain())
           .toList();

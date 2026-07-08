@@ -31,7 +31,6 @@ class AuthProvider extends ChangeNotifier {
   /// Retorna si el usuario autenticado tiene privilegios de edición (Admin o Profesor).
   bool get hasWriteAccess => isAdmin || isProfessor;
 
-  /// Verifica el estado de autenticación al abrir la app.
   Future<void> checkAuthStatus() async {
     try {
       final hasToken = await _authRepository.isAuthenticated();
@@ -39,7 +38,7 @@ class AuthProvider extends ChangeNotifier {
         final accessToken = await _secureStorage.getAccessToken();
         if (accessToken != null && !JwtDecoder.isExpired(accessToken)) {
           final decoded = JwtDecoder.decode(accessToken);
-          final userId = decoded['user_id'] as int;
+          final userId = int.tryParse(decoded['user_id']?.toString() ?? '') ?? 0;
           
           // Recupera el usuario completo de la base de datos
           _currentUser = await _authRepository.getCurrentUser(userId);
@@ -69,7 +68,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       final token = await _authRepository.login(username, password);
       final decoded = JwtDecoder.decode(token.accessToken);
-      final userId = decoded['user_id'] as int;
+      final userId = int.tryParse(decoded['user_id']?.toString() ?? '') ?? 0;
       
       // Obtiene los datos del perfil actual
       _currentUser = await _authRepository.getCurrentUser(userId);

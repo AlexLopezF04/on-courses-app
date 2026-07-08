@@ -14,7 +14,8 @@ migrate_working_dir/
 .env
 repomix-output.md
 repomix-output.xml
-
+transcript_full.jsonl
+transcript.jsonl
 
 
 # IntelliJ related

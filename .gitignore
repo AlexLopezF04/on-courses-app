@@ -12,12 +12,6 @@
 .swiftpm/
 migrate_working_dir/
 .env
-repomix-output.md
-repomix-output.xml
-transcript_full.jsonl
-transcript.jsonl
-documentacion_proyecto.md
-
 
 # IntelliJ related
 *.iml
@@ -50,3 +44,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Documentation
+repomix-output.md
+repomix-output.xml
+transcript_full.jsonl
+transcript.jsonl
+documentacion_proyecto.md

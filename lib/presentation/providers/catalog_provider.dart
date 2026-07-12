@@ -11,6 +11,7 @@ class CatalogProvider extends ChangeNotifier {
   List<Product> _courses = [];
   Product? _selectedCourse;
   int? _selectedCategoryId;
+  String _searchQuery = '';
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -18,6 +19,7 @@ class CatalogProvider extends ChangeNotifier {
   List<Product> get courses => _courses;
   Product? get selectedCourse => _selectedCourse;
   int? get selectedCategoryId => _selectedCategoryId;
+  String get searchQuery => _searchQuery;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
@@ -29,7 +31,10 @@ class CatalogProvider extends ChangeNotifier {
 
     try {
       _categories = await _catalogRepository.getCategories();
-      _courses = await _catalogRepository.getCourses(categoryId: _selectedCategoryId);
+      _courses = await _catalogRepository.getCourses(
+        categoryId: _selectedCategoryId,
+        search: _searchQuery,
+      );
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -47,7 +52,10 @@ class CatalogProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _courses = await _catalogRepository.getCourses(categoryId: _selectedCategoryId);
+      _courses = await _catalogRepository.getCourses(
+        categoryId: _selectedCategoryId,
+        search: _searchQuery,
+      );
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -55,6 +63,33 @@ class CatalogProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  /// Busca cursos según un término de búsqueda.
+  Future<void> searchCourses(String query) async {
+    _searchQuery = query;
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _courses = await _catalogRepository.getCourses(
+        categoryId: _selectedCategoryId,
+        search: _searchQuery,
+      );
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString();
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// Limpia el buscador
+  void clearSearch() {
+    _searchQuery = '';
+    searchCourses('');
   }
 
   /// Obtiene los detalles completos de un curso.

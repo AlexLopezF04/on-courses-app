@@ -32,11 +32,14 @@ class CatalogRepositoryImpl implements CatalogRepository {
   }
 
   @override
-  Future<List<Product>> getCourses({int? categoryId}) async {
+  Future<List<Product>> getCourses({int? categoryId, String? search}) async {
     try {
       final Map<String, dynamic> queryParams = {};
       if (categoryId != null) {
         queryParams['category'] = categoryId;
+      }
+      if (search != null && search.isNotEmpty) {
+        queryParams['search'] = search;
       }
 
       final response = await _dio.get(

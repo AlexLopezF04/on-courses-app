@@ -17,6 +17,8 @@ class CatalogScreen extends StatefulWidget {
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -27,6 +29,12 @@ class _CatalogScreenState extends State<CatalogScreen> {
         context.read<CartProvider>().loadCart();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -104,6 +112,9 @@ class _CatalogScreenState extends State<CatalogScreen> {
             // Banner de bienvenida premium
             _buildWelcomeBanner(authProvider),
 
+            // Buscador de cursos
+            _buildSearchBar(context, catalogProvider),
+
             // Filtro de Categorías Horizontal
             _buildCategoriesSection(catalogProvider),
 
@@ -154,6 +165,51 @@ class _CatalogScreenState extends State<CatalogScreen> {
             style: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar(BuildContext context, CatalogProvider provider) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: TextField(
+        controller: _searchController,
+        style: AppTextStyles.bodyMedium,
+        decoration: InputDecoration(
+          hintText: 'Buscar cursos...',
+          hintStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.grey.shade400),
+          prefixIcon: Icon(Icons.search_rounded, color: AppColors.primary),
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear_rounded),
+                  onPressed: () {
+                    _searchController.clear();
+                    provider.clearSearch();
+                    FocusScope.of(context).unfocus();
+                    setState(() {});
+                  },
+                )
+              : null,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15.0),
+            borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15.0),
+            borderSide: BorderSide(color: Colors.grey.shade200, width: 1),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15.0),
+            borderSide: BorderSide(color: AppColors.primary.withOpacity(0.5), width: 1.5),
+          ),
+        ),
+        onChanged: (query) {
+          provider.searchCourses(query);
+          setState(() {});
+        },
       ),
     );
   }
